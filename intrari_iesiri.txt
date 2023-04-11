@@ -1,0 +1,133 @@
+/* Lab 8  Popa Larisa-Ancuta  Prob 1
+ * se preiau datele de la tastatura cu un BufferedReader si ImputStreamReader
+ * se preia: un mesaj de tip String, ziua ca intreg, luna de tip String, anul ca intreg
+ * procesul se incheie cand trece la linie noua(se va afisa fiecare camp pe linie separata)
+ * se afiseaza campurile in ordinea aparitiei
+ * Recomandare: se foloseste StreamTokenizer, atribute sval/nval, respectiv const TT_EOL
+ * in cazul in care nu cunoasteti natura campurilor introduse(numeric,cuvant) folosind const. TT_NUMBER/TT_WORD
+ */
+
+import java.io.*;
+
+public class Prob_1 
+{
+
+	public static void main(String[] args) 
+	{
+		String mesaj=null;
+		String luna = null;
+		int ziua = 0,anul = 0;
+		
+		try
+		{
+			BufferedReader bufRead=new BufferedReader (new InputStreamReader (System.in));
+			StreamTokenizer inStream = new StreamTokenizer(bufRead);
+			
+			boolean eof = false;
+	         
+			inStream.eolIsSignificant(true);
+			
+			do {
+				int token = inStream.nextToken();
+	            
+				switch (token) 
+				{         
+				case StreamTokenizer.TT_EOL:
+					System.out.println("Sfarsitul liniei!");
+					eof=true;
+					break;
+		                  
+				case StreamTokenizer.TT_WORD:
+					if(mesaj==null)
+						mesaj=inStream.sval;
+					else
+						luna=inStream.sval;
+					break;
+		                  
+				case StreamTokenizer.TT_NUMBER:
+					if(ziua==0)
+						ziua=(int)inStream.nval;
+					else
+						anul=(int)inStream.nval;
+					break;
+				}
+			} while (!eof);	
+			
+			 System.out.println("\nMesaj: "+mesaj+"\nZi: "+ziua+"\nLuna: "+luna+"\nAnul: "+anul);
+		}
+		catch(IOException e)
+		{
+			System.out.println("Eroare la citire!");
+		}	
+	}
+
+}
+
+
+-------------------------------------------------------------------------------
+
+* Lab 8  Popa Larisa-Ancuta  Prob 2
+ * sa se implementeze aplicatia anterioara folosind un fisier de intrare care contine un anumit numar de inregistrari in formatul specificat
+ */
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.StreamTokenizer;
+
+public class Prob_2 
+{
+
+	public static void main(String[] args) 
+	{
+		String mesaj=null;
+		String luna = null;
+		int ziua = 0,anul = 0;
+		
+		try
+		{
+			BufferedReader bufRead=new BufferedReader (new FileReader("D:\\_University_\\__AN-2__\\Semestrul_2\\IS\\Projects\\Lab_8_Prob_2\\File.txt"));
+			StreamTokenizer inStream = new StreamTokenizer(bufRead);
+			
+			boolean eof = false;
+	         
+			inStream.eolIsSignificant(true);
+			
+			do {
+				int token = inStream.nextToken();
+	            
+				switch (token) 
+				{    
+				case StreamTokenizer.TT_EOF:
+					System.out.println("Sfarsitul fisierului!");
+					eof=true;
+					break;
+				case StreamTokenizer.TT_EOL:
+					System.out.println("Sfarsitul liniei!");
+					break;
+		                  
+				case StreamTokenizer.TT_WORD:
+					if(mesaj==null)
+						mesaj=inStream.sval;
+					else
+						luna=inStream.sval;
+					break;
+		                  
+				case StreamTokenizer.TT_NUMBER:
+					if(ziua==0)
+						ziua=(int)inStream.nval;
+					else
+						anul=(int)inStream.nval;
+					break;
+				}
+				
+			} while (!eof);	
+			
+			System.out.println("\nMesaj: "+mesaj+"\nZi: "+ziua+"\nLuna: "+luna+"\nAnul: "+anul);
+		}
+		catch(IOException e)
+		{
+			System.out.println("Eroare la citire!");
+		}	
+	}
+
+}

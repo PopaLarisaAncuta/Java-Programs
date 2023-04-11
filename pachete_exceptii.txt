@@ -1,0 +1,383 @@
+/* Lab 6  Popa Larisa-Ancuta  Prob 1
+ * sa se defineasca un sir de valori de tip double(citite de la tastatura)
+ * sa se trateze exceptiile - accesarea unui element cu index negativ/mai mare decat indexul ultimului element din sir
+ * sa se afiseze un mesaj corespunzator in momentul detectarii exceptiei
+ * 
+ * se considera o matrice cu numar de coloane fix pentru fiecare linie 
+ * sa se trateze exceptia care poate aparea
+ * sa se ia in considerare cazul in care matricea are numar diferit de coloane la fiecare linie
+ */
+
+import java.util.Scanner;
+import java.lang.Throwable;
+
+class MyException extends Throwable
+{
+	public MyException()
+	{
+		super("Matricea nu are numar egal de coloane pe fiecare linie!");
+	}
+}
+
+public class Prob_1 
+{
+	public static Scanner dis;
+	
+	public void exceptie(int n) throws ArrayIndexOutOfBoundsException
+	{
+		double sir[]=new double[10];
+		
+		if(n<0)
+			System.out.println("Index negativ!");
+		else
+		{
+			for(int i=0;i<n;i++)
+				sir[i]=dis.nextDouble();
+			System.out.println("Sirul introdus este: ");
+			for(int i=0;i<n;i++)
+				System.out.print(sir[i]+" ");
+		}
+	}
+	
+	public void matrice(int n,int m[]) throws MyException
+	{
+		for(int i=0;i<n-1;i++)
+		{
+			for(int j=1;j<n;j++)
+				if(m[i]!=m[j])
+					throw new MyException();
+		}
+		
+		System.out.println("Dimensiunea matricii este corecta!");
+	}
+	
+	public static void main(String[] args) 
+	{
+		dis=new Scanner(System.in);
+		
+		//sir de valori de tip double
+		int n;
+		System.out.println("Introduceti numarul de valori: ");
+		n=dis.nextInt();
+		
+		Prob_1 test= new Prob_1();
+		
+		try
+		{
+			test.exceptie(n);
+		}
+		catch(ArrayIndexOutOfBoundsException e)
+		{
+			System.out.println("Index prea mare!");
+		}
+		finally
+		{
+			System.out.println("The end!");
+		}
+		
+		//matrice
+		System.out.println("\nMatrice\nIntroduceti numarul de linii: ");
+		n=dis.nextInt();
+		
+		int m[]=new int[n];
+		
+		for(int i=0;i<n;i++)
+		{
+			System.out.println("Introduceti numarul de coloane pe linia "+i+": ");
+			m[i]=dis.nextInt();
+		}
+		
+		try
+		{
+			test.matrice(n, m);
+		}
+		catch(MyException e1)
+		{
+			System.out.println(e1.toString());
+		}
+		finally
+		{
+			System.out.println("Se pot introduce elementele matricii...");
+		}
+		
+	}
+}
+
+
+-------------------------------------------------------------------------------
+
+/* Lab 6  Popa Larisa-Ancuta  Prob 2
+ * metoda main() contine o secventa de cod care poate sa lanseze exceptii de tip:
+ * ArithmeticException
+ *ArrayIndexOutOfBoundsException
+ *NullPointerException
+ *NumberFormatException
+ *sa se afiseze in cadrul blocurilor catch mesajul generat de exceptii
+ *in blocul finally, sa se afiseze mesajul "Am prins sau nu exceptii"
+ */
+//clasa de bază
+
+import java.util.Scanner;
+
+public class Prob_2
+{
+	void impartire(int a, int b) throws ArithmeticException
+	{
+		if(b==0)
+		{
+			ArithmeticException ex1 = new ArithmeticException("Nu se poate efectua impartirea cu 0!");
+			throw ex1;
+		}
+		else
+			System.out.println("a/b= "+(float)a/b);
+	}
+	
+	void number(int a, Scanner dis) throws NumberFormatException
+	{
+		a=Integer.parseInt(dis.nextLine());
+		
+		System.out.println("Numarul introdus este: "+ a);
+	}
+	
+	void pointer(String s)
+	{
+		if ("abc".equals(s))
+            System.out.print("La fel");
+        else
+            System.out.print("Diferit");  
+	}
+	
+	public static void main(String[] args)
+	{
+		Scanner dis =new Scanner(System.in);
+		Prob_2 obj=new Prob_2();
+		int a=0;
+		String s = null;
+		
+		//ArithmeticException
+		try{
+			obj.impartire(25, 5);
+			obj.impartire(25, 0);
+		}
+		catch(ArithmeticException e){
+			System.out.println("Nu se poate efectua impartirea cu 0!");
+		}
+		finally {
+			System.out.println("Am prins sau nu exceptii");
+		}
+		
+		//NumberFormatException
+		try {
+			System.out.println("Introduceti un numar: ");
+			obj.number(a, dis);
+		}
+		catch(NumberFormatException e)
+		{
+			System.out.println("Numarul introdus nu este in formatul corect!");
+		}
+		finally {
+			System.out.println("Am prins sau nu exceptii");
+		}
+		
+		//NullPointerException
+		try {
+			System.out.println("Sunt identice sirurile?");
+			obj.pointer(s);
+		}
+		catch(NullPointerException e)
+		{
+			System.out.println("Numarul introdus nu este in formatul corect!");
+		}
+		finally {
+			System.out.println("\nAm prins sau nu exceptii");
+		}
+	}
+}
+
+
+-------------------------------------------------------------------------------
+
+/* Lab 6  Popa Larisa-Ancuta  Prob 3
+ * pack1 contine:
+     -interfata Int1(2 var. intregi + metoda sum() returneaza suma var.)
+     -clasa Class1(2 var. protected double, constructor, metode accesor si mutator)
+ *pack2 contine:
+     -interfata Int2(2 var. double + metoda product() returneaza produsul var.)
+ *sursa:
+     -Class2 derivata din Class1 implementeaza Int1 si Int2
+     -aplicati metodele pentru a calcula suma si produsul a doua numere citite de la tastatura
+ */
+
+//sursa Class2
+import java.util.Scanner;
+import pack1.*;
+import pack2.*;
+
+public class Class2 implements Int1,Int2
+{
+	public static Scanner dis;
+	public static void main(String[] args)
+	{
+		dis=new Scanner(System.in);
+		
+		Class2 obj=new Class2();
+		
+		int a,b;
+		System.out.println("Introduceti doua numere intregi: ");
+		a=dis.nextInt();
+		b=dis.nextInt();
+		System.out.println("Suma celor doua numere este: "+obj.sum(a, b));
+		
+		double x,y;
+		System.out.println("Introduceti doua numere reale: ");
+		x=dis.nextDouble();
+		y=dis.nextDouble();
+		System.out.println("Produsul celor doua numere este: "+obj.product(x, y));
+	}
+}
+
+//pack1 interfata Int1
+package pack1;
+
+public interface Int1 
+{
+	int a=2, b=10;
+	
+	default int sum(int a,int b)
+	{
+		return a+b;
+	}
+}
+
+//pack1 clasa Class1
+package pack1;
+
+public class Class1 
+{
+	protected double x,y;
+	
+	Class1()
+	{
+		x=0;
+		y=0;
+	}
+	
+	Class1(int x,int y)
+	{
+		this.x=x;
+		this.y=y;
+	}
+	
+	public void setX(int x)
+	{
+		this.x=x;
+	}
+	public double getX()
+	{
+		return x;
+	}
+	
+	public void setY(int y)
+	{
+		this.y=y;
+	}
+	public double getY()
+	{
+		return y;
+	}
+}
+
+//pack2 interfata Int2
+package pack2;
+
+public interface Int2 
+{
+	double a=2.5,b=10.2;
+	
+	default double product(double a, double b)
+	{
+		return a*b;
+	}
+}
+
+-------------------------------------------------------------------------------
+
+/* Lab 6  Popa Larisa-Ancuta  Prob 4
+ * creati o clasa derivata din Exception, numita SuperExceptie 
+ * o clasa ExceptieMaiMica derivata din SuperExceptie
+ * in constructorii claselor afisati un mesaj care indica exceptia generata
+ * in cadrul altei clase creati:
+     -o metoda a() care arunca o exceptie de tip ExceptieMaiMica
+     -o metoda b() care arunca o exceptie de tip SuperExceptie
+ * in main() apelati aceste metode si incercati sa determinati tipul de exceptie
+ * verificati daca blocul catch al tipului ExceptieMaiMica poate prinde o SuperExceptie
+ */
+
+@SuppressWarnings("serial")
+class SuperExceptie extends Exception
+{
+	SuperExceptie()
+	{
+		System.out.println("Aceasta este o super exceptie!");
+	}
+}
+
+@SuppressWarnings("serial")
+class ExceptieMaiMica extends SuperExceptie
+{
+	ExceptieMaiMica()
+	{
+		System.out.println("Aceasta este o exceptie mai mica!");
+	}
+}
+
+public class Prob_4 
+{
+	public void a() throws ExceptieMaiMica
+	{
+		throw new ExceptieMaiMica();
+	}
+	
+	public void b() throws SuperExceptie
+	{
+		throw new SuperExceptie();
+	}
+	
+	public static void main(String[] args) 
+	{
+		Prob_4 obj = new Prob_4();
+		
+		try{
+			obj.b();
+		}
+		catch(SuperExceptie e1)
+		{
+			e1.getMessage();
+		}
+		finally {
+			System.out.println("The end SuperExceptie!\n");
+		}
+		
+		try{
+			obj.a();
+		}
+		catch(ExceptieMaiMica e2)
+		{
+			e2.getMessage();
+		}
+		finally {
+			System.out.println("The end ExceptieMaiMica!\n");
+		}
+		
+		try{
+			obj.a();
+		}
+		catch(SuperExceptie e3)
+		{
+			e3.getMessage();
+		}
+		finally {
+			System.out.println("The end ExceptieMaiMica catch SuperExceptie!\n");
+		}
+	}
+}

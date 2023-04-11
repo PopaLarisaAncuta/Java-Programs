@@ -1,0 +1,481 @@
+/* Lab 7  Popa Larisa-Ancuta  Prob 1
+ * se creaza o interfata numita Generator<T> su singura metoda next(T var)
+ * se implementeaza interfata pentru a permite generarea valorilor urmatoare in cazul in care variabilele sunt de tipuri concrete
+ * clasa se instantiaza in metoda main(), pozitionata intr-o clasa distincta
+ */
+interface Generator <T>
+{
+	public T next(T var);
+}
+
+public class Prob_1<T> implements Generator<T>
+{
+	public T next(T var)
+	{
+		return var;
+	}
+	
+	public static void main(String[] args)
+	{
+		Prob_1<Integer> in = new Prob_1<Integer>();
+		System.out.println("Integer: " + in.next(5));
+		
+		Prob_1<Double> db = new Prob_1<Double>();
+		System.out.println("Double: " + db.next(5.25));
+		
+		Prob_1<Character> ch = new Prob_1<Character>();
+		System.out.println("Char: " + ch.next('L'));
+		
+		Prob_1<String> s = new Prob_1<String>();
+		System.out.println("String: " + s.next("Ana are mere!"));
+	}
+}
+
+
+-------------------------------------------------------------------------------
+
+/* Lab 7  Popa Larisa-Ancuta  Prob 2
+ * sa se creze o clasa Calculator care are metodele: adunare, scadere, inmultire, impartire
+ * metodele vor avea ca intrare tipuri de date generice(returneaza rezultatul conform acestor date)
+ * metodele adunare/scadere permit variabile de tip String, restul operatiilor interzise pe String(mesaj de eroare)
+ * se scrie acceasi clasa folosind suprancarcarea metodelor
+ */
+
+import java.util.Scanner;
+
+public class Calculator<T>
+{
+	public <T> T adunare(T var1,T var2)
+	{
+		if(var1.getClass() == String.class && var2.getClass() == String.class)
+			return (T) (var1.toString()+var2.toString()).toString();
+		else if(var1.getClass() == Integer.class && var2.getClass() == Integer.class) 
+			return (T) (Integer)( Integer.valueOf(var1.toString()) + Integer.valueOf(var2.toString()));
+		else if(var1.getClass() == Float.class && var2.getClass() == Float.class)
+			return (T) (Float)(Float.valueOf(var1.toString()) + Float.valueOf(var2.toString()));
+		else return null;
+	}	
+	
+	//nu functioneaza
+	public <T> T scadere(T var1,T var2)
+	{
+		if(var1.getClass() == String.class && var2.getClass() == String.class)
+		{
+			if(var1.toString().contains(var2.toString()))
+			{
+				var1.toString().replaceAll(var2.toString(), "");
+				
+				return (T) var1.toString();
+			}
+			else
+				return (T) ("Scaderea nu poate fi efectuata!").toString();
+		}
+		else if(var1.getClass() == Integer.class && var2.getClass() == Integer.class) 
+			return (T) (Integer)( Integer.valueOf(var1.toString()) - Integer.valueOf(var2.toString()));
+		else if(var1.getClass() == Float.class && var2.getClass() == Float.class)
+			return (T) (Float)(Float.valueOf(var1.toString()) - Float.valueOf(var2.toString()));
+		else return null;
+	}	
+	
+	public <T> T inmultire(T var1,T var2)
+	{
+		if(var1.getClass() == Integer.class && var2.getClass() == Integer.class) 
+			return (T) (Integer)( Integer.valueOf(var1.toString()) * Integer.valueOf(var2.toString()));
+		else if(var1.getClass() == Float.class && var2.getClass() == Float.class)
+			return (T) (Float)(Float.valueOf(var1.toString()) * Float.valueOf(var2.toString()));
+		else
+		{
+			return (T) ("Tip de date invalid!").toString();
+		}
+	}	
+	
+	public <T> T impartire(T var1,T var2)
+	{
+		if(var1.getClass() == Integer.class && var2.getClass() == Integer.class) 
+			return (T) (Integer)( Integer.valueOf(var1.toString()) / Integer.valueOf(var2.toString()));
+		else if(var1.getClass() == Float.class && var2.getClass() == Float.class)
+			return (T) (Float)(Float.valueOf(var1.toString()) / Float.valueOf(var2.toString()));
+		else
+		{
+			return (T) ("Tip de date invalid!").toString();
+		}
+	}	
+	
+	public static Scanner dis;
+	public static void main(String[] args) 
+	{
+		dis = new Scanner(System.in);
+		
+		int a,b;
+		float x,y;
+		String s1,s2;
+		
+		Calculator calc=new Calculator();
+		
+		System.out.println("Introduceti doua variabile intregi: ");
+		a=dis.nextInt();
+		b=dis.nextInt();
+		
+		System.out.println("Introduceti doua variabile reale: ");
+		x=dis.nextFloat();
+		y=dis.nextFloat();
+		
+		System.out.println("Introduceti doua siruri de caractere: ");
+		s1=dis.next();
+		s2=dis.next();
+		
+		System.out.println("\nAdunare:" +
+				"   \nInt: " + calc.adunare(a, b) +
+				"   \nFloat: " + calc.adunare(x, y) + 
+				"   \nString: " + calc.adunare(s1, s2));
+		
+		//nu functioneaza
+		System.out.println("\nScadere:" +
+				"   \nInt: " + calc.scadere(a, b) +
+				"   \nFloat: " + calc.scadere(x, y) + 
+				"   \nString: " + calc.scadere(s1, s2));
+		
+		System.out.println("\nInmultire:" +
+				"   \nInt: " + calc.inmultire(a, b) +
+				"   \nFloat: " + calc.inmultire(x, y) + 
+				"   \nString: " + calc.inmultire(s1, s2));
+		
+		System.out.println("\nImpartire:" +
+				"   \nInt: " + calc.impartire(a, b) +
+				"   \nFloat: " + calc.impartire(x, y) + 
+				"   \nString: " + calc.impartire(s1, s2));
+	}
+
+}
+
+
+-------------------------------------------------------------------------------
+
+/* Lab 7  Popa Larisa-Ancuta  Prob 3
+ * clasa SetterGetter generica permite setarea si returnarea valorilor atributelor pentru mai multe tipuri de obiecte
+ * avand clasele Copil/Adult/Pensionar, sa se poata returna numele si varsta acestora
+ * sa se creeze colectii cu intrari unice de obiecte de tip Copil/Adult/Pensionar(populate cu date din consola)
+ * sa se afiseze datele preluate in diferite moduri
+ * 
+ */
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class SetterGetter<T>
+{
+	public T var;
+	
+	public void setVar(T var)
+	{
+		this.var=var;
+	}
+	
+	public T getVar()
+	{
+		return var;
+	}
+
+	public static Scanner dis;
+	public static void main(String[] args) 
+	{
+		dis=new Scanner(System.in);
+		
+		ArrayList <Copil> copil = new ArrayList<Copil>();
+		ArrayList <Adult> adult = new ArrayList<>();
+		ArrayList <Pensionar> pensionar = new ArrayList<>();
+		
+		String nume=new String();
+		int varsta=0;
+		double salariu=0,pensie=0;
+		
+		for(int i=0;i<2;i++)
+		{
+			Copil c = new Copil();
+			
+			System.out.println("Copilul " + i);
+			System.out.print("   Nume: ");
+			nume = new String(dis.next());
+			System.out.print("   Varsta: ");
+			varsta = dis.nextInt();
+			
+			c.setNume(nume);
+			c.setVarsta(varsta);
+			
+			copil.add(i,c);
+		}
+		
+		for(int i=0;i<2;i++)
+		{
+			Adult a=new Adult();
+			
+			System.out.println("Adultul " + i);
+			System.out.print("   Nume: ");
+			nume = new String(dis.next());
+			System.out.print("   Varsta: ");
+			varsta = dis.nextInt();
+			System.out.print("   Salariu: ");
+			salariu = dis.nextDouble();
+			
+			a.setNume(nume);
+			a.setVarsta(varsta);
+			a.setSalariu(salariu);
+			
+			adult.add(i,a);
+		}
+		
+		for(int i=0;i<2;i++)
+		{
+			Pensionar p=new Pensionar();
+			
+			System.out.println("Pensionarul " + i);
+			System.out.print("   Nume: ");
+			nume = new String(dis.next());
+			System.out.print("   Varsta: ");
+			varsta = dis.nextInt();
+			System.out.print("   Pensie: ");
+			pensie = dis.nextDouble();
+			
+			p.setNume(nume);
+			p.setVarsta(varsta);
+			p.setPensie(pensie);
+			
+			pensionar.add(i,p);
+		}
+		
+		System.out.print("\nCopii");
+		for(Copil i:copil)
+			i.afisare();
+		
+		
+		System.out.print("\n\nAdulti");
+		for(Adult i:adult)
+		{
+			i.afisare();
+			System.out.println("   Salariu: "+ i.getSalariu());
+		}
+		
+		
+		System.out.print("\nPensionari");
+		for(Pensionar i:pensionar)
+			System.out.print("\n   Nume: " +  i.getNume() + "\n   Varsta: " + i.getVarsta() +"\n   Pensie: " + i.getPensie()+"\n");
+	}
+
+}
+
+//clasa Copil
+public class Copil 
+{
+	public String nume;
+	public int varsta;
+
+	public void setNume(String nume) 
+	{
+		this.nume = nume;
+	}
+	public void setVarsta(int varsta) {
+		
+		this.varsta = varsta;
+	}
+	
+	public String getNume()
+	{
+		return nume;
+	}
+	public int getVarsta()
+	{
+		return varsta;
+	}
+	
+	public void afisare()
+	{
+		System.out.print("\n   Nume: " + nume + "\n   Varsta: " + varsta+"\n");
+	}
+}
+
+//clasa Adult
+class Adult extends Copil
+{
+	double salariu;
+	
+	public Adult()
+	{
+		super();
+	}
+	
+	public void setSalariu(double salariu)
+	{
+		this.salariu=salariu;
+	}
+	
+	public double getSalariu()
+	{
+		return salariu;
+	}
+}
+
+//clasa Pensionar
+class Pensionar extends Copil
+{
+	double pensie;
+	
+	public Pensionar()
+	{
+		super();
+	}
+	
+	public void setPensie(double pensie)
+	{
+		this.pensie=pensie;
+	}
+	
+	public double getPensie()
+	{
+		return pensie;
+	}
+}
+
+
+-------------------------------------------------------------------------------
+
+/* Lab 7  Popa Larisa-Ancuta  Prob 4
+ * clasa UserFile: denumire/extensie/tip/marime in bytes/constructori/mutatori/accesori
+ * tipurile de fisiere sunt predefinite si stocate intr-un obiect Hashtable("imagine"=>0, "text"=>1, "aplicatie"=>2)
+ * se creeaza un sir de obiecte instantiate din aceasta clasa 
+ * se citesc de la tastatura datele aferente
+ * se afiseaza toate extensiile specifice tipurilor de fisiere predefinite
+ * se ordoneaza lista de fisiere in functie de marime(se afiseaza rezultatul)
+ */
+
+import java.util.Hashtable;
+import java.util.Scanner;
+
+public class UserFile implements Comparable<UserFile>
+{
+	public String denumire, extensie, tip;
+	public int dimBytes;
+	
+	UserFile()
+	{
+		denumire=null;
+		extensie=null;
+		tip=null;
+		dimBytes=0;
+	}
+	
+	//constructor
+	UserFile(String denumire, String extensie, String tip, int dim)
+	{
+		this.denumire = denumire;
+		this.extensie = extensie;
+		this.tip = tip;
+		this.dimBytes = dim;
+	}
+
+	//mutatori
+	public void setDenumire(String denumire) 
+	{
+		this.denumire = denumire;
+	}
+	public void setExtensie(String extensie) 
+	{
+		this.extensie = extensie;
+	}
+	public void setTip(String tip)
+	{
+		this.tip = tip;
+	}
+	public void setDimBytes(int dimBytes) 
+	{
+		this.dimBytes = dimBytes;
+	}
+	
+	//accesori
+	public String getDenumire() 
+	{
+		return denumire;
+	}
+	public String getExtensie() 
+	{
+		return extensie;
+	}
+	public String getTip() 
+	{
+		return tip;
+	}
+	public int getDimBytes() 
+	{
+		return dimBytes;
+	}
+	
+	@Override
+	public int compareTo(UserFile o) 
+	{
+		if(o.getDimBytes() < dimBytes)
+			return 1;
+		
+		return 0;
+	}
+	
+	public static Scanner dis;
+	
+	//main
+	public static void main(String[] args) 
+	{
+		dis=new Scanner(System.in);
+		
+		System.out.print("Introduceti numarul de obiecte: ");
+		int n = dis.nextInt();
+		
+		UserFile[] tab = new UserFile[n];
+		
+		Hashtable<String,String> extensie = new Hashtable<String,String>();
+		extensie.put("imagine",".jpg");
+		extensie.put("text",".txt");
+		extensie.put("aplicatie",".exe");
+		
+		for(int i = 0 ; i < n ; i ++)
+		{
+			System.out.print("\nFisierul " + i);
+			tab[i]=new UserFile();
+			
+			System.out.print("\n   Introduceti denumirea fisierului: ");
+			tab[i].setDenumire(dis.next());
+			
+			System.out.print("   Introduceti tipul fisierului imagine/text/aplicatie: ");
+			tab[i].setTip(dis.next());
+			
+			System.out.print("   Introduceti dimensiunea fisierului: ");
+			tab[i].setDimBytes(dis.nextInt());
+			
+			tab[i].setExtensie(extensie.get(tab[i].getTip()));
+			
+		}
+		
+		//afisare extensii fisiere
+		System.out.print("\nExtensiile fisierelor: ");
+		for(int i=0;i<n;i++)
+			System.out.print("\nTip: "+ tab[i].getTip() + " => Extensie: " + tab[i].getExtensie());
+		
+		//ordonare lista de fisiere dupa dimensiune
+		for(int i=0;i<n-1;i++)
+		{
+			for(int j=i+1;j<n;j++)
+			{
+				if(tab[i].compareTo(tab[j]) != 0)
+				{
+					UserFile aux = tab[i];
+					tab[i] = tab[j];
+					tab[j] = aux;
+				}
+			}
+		}
+		System.out.print("\n\nFisierele ordonate crescator: ");
+		for(int i=0;i<n;i++)
+			System.out.print("\nFisierul "+i+
+					"\n   Denumire: " + tab[i].getDenumire() + 
+					"\n   Tip: " + tab[i].getTip() +
+					"\n   Extensie: " + extensie.get(tab[i].getTip()) + 
+					"\n   Marime in bytes: " + tab[i].getDimBytes());
+	}
+}

@@ -1,0 +1,357 @@
+/*Popa Larisa-Ancuta  Lab 3  Prob 1
+ -cititi o valoare intreaga
+ -in cazul in care valoarea intreaga este cuprinsa intre 1-12 sa se afiseze luna corespunzatoare
+ -considerati cazul in care valoarea introdusa este un sir de caractere
+ -daca aceasta corespunde unei luni din an afisati valoarea numerica a lunii
+ */
+
+import java.lang.String;
+import java.util.Scanner;
+
+public class Prob_01
+{
+	private static Scanner dis;
+	public static void main(String[] args) 
+	{
+		// TODO Auto-generated method stub
+		
+		dis = new Scanner(System.in);
+		
+		System.out.println("Introduceti o valoare: ");
+		String imput=dis.next();
+		
+		String[] lit = {"Ianuarie","Februarie","Martie","Aprilie","Mai","Iunie",
+				"Iulie","August","Septembrie","Octombrie","Noiembrie","Decembrie"};
+		
+		boolean ok=false;
+		
+		if(imput.length()<=2)
+		{
+				int luna = Integer.parseInt(imput);
+				if(luna<=12 && luna>0)
+				{
+					System.out.println("Luna introdusa: "+ luna);
+					System.out.println("Luna echivalenta: "+ lit[luna-1]);
+					ok=true;
+				}
+				else
+					System.out.println("Valoarea introdusa este incorecta!");
+		}
+		else
+		{
+			System.out.println("Luna introdusa: "+ imput);
+			
+			for(int i=0;i<lit.length;i++)
+			{
+				if(imput.equals(lit[i]))
+				{
+					System.out.println("Luna echivalenta: "+(i+1));
+					ok=true;
+				}
+			}
+			
+			if(ok==false)
+				System.out.println("Valoarea introdusa este incorecta!");
+		}
+	}
+
+}
+
+-------------------------------------------------------------------------------
+
+/* Popa Larisa-Ancuta  Lab 3  Prob 2
+ -cititi un sir de caractere de la intrarea standard
+ -transformati sirul intr-un tablou de caractere
+ -cautati in acest tablou un caracter specificat in program
+ -afisati numarul de aparitii
+ */
+
+import java.lang.String;
+import java.util.Scanner;
+
+public class Prob_02 
+{
+	public static Scanner dis;
+	public static void main(String[] args)
+	{
+		// TODO Auto-generated method stub
+		
+		dis=new Scanner(System.in);
+		
+		System.out.println("Introduceti un sir de caractere: ");
+		String sir = dis.nextLine();
+		
+		//copy char by char into an array of string length
+		char[] tab = new char[sir.length()];
+		
+		for(int i=0;i<sir.length();i++)
+			tab[i]=sir.charAt(i);
+		
+		char c = 'a';
+		int nr=0;
+		
+		//count char appearances in array
+		for(int i=0;i<tab.length;i++)
+			if(tab[i]==c)
+				nr++;
+		
+		//print array and counter
+		System.out.println("Tabloul este: ");
+		for(char i:tab)
+			System.out.print(i+" ");
+		System.out.println("\nCaracterul '"+c+"' apare de: "+nr+" ori.");
+		
+	}
+
+}
+
+-------------------------------------------------------------------------------
+
+/* Popa Larisa-Ancuta  Lab 3  Prob 3
+ -pornim de la problema 2
+ -copiati primele trei caractere din sir intr-un alt tablou
+ -afisati rezultatul obtinut
+ -folositi metoda arraycopy() din clasa System
+*/
+
+import java.util.Scanner;
+
+public class Prob_03 
+{
+	public static Scanner dis;
+	public static void main(String[] args)
+	{
+		// TODO Auto-generated method stub
+
+		dis = new Scanner(System.in);
+		
+		System.out.println("Introduceti un sir de caractere: ");
+		String sir = dis.nextLine();
+		
+		//copy char by char into an array of string length
+		char[] tab = new char[sir.length()];
+		char[] newTab = new char[4];
+		
+		for(int i=0;i<sir.length();i++)
+			tab[i]=sir.charAt(i);
+		
+		if(tab.length>=3)
+		{
+		System.out.println("Tabloul este: ");
+		for(char i:tab)
+			System.out.print(i+" ");
+		
+		System.arraycopy(tab, 0, newTab, 0, 3);
+		System.out.println("\nPrimele 3 caractere copiate din primul tablou sunt: "+ new String(newTab));
+		}
+		else
+			System.out.println("\nTabloul introdus contine mai putin de 3 caractere!");
+	}
+
+}
+
+-------------------------------------------------------------------------------
+
+/* Popa Larisa-Ancuta  Lab 3  Prob 4
+ -scrieti o aplicatie care defineste o valoare intreaga
+ -afiseaza reprezentarea lor binara,octala,hexazecimala
+ -scrieti metode de conversie a valorii citite în diferite baze de numeratie
+*/
+
+import java.lang.String;
+import java.util.Scanner;
+
+public class Prob_04 
+{
+	public static Scanner dis;
+	
+	public static void binary(int val)
+	{
+		int nr=0,n=val;
+		int[] bin=new int[10];
+		
+		while (n!= 0) 
+	    {
+	        bin[nr] = n % 2;
+	        n = n / 2;
+	        nr++;
+	    }   
+		
+		System.out.print("\n(metoda)Valoare binara: ");
+		for(int i=nr-1;i>=0;i--)
+			System.out.print(bin[i]);
+	}
+	
+	public static void octal(int val)
+	{
+		int nr=0, n=val;
+		int[] oct=new int[10];
+		
+	    while (n!= 0) 
+	    {
+	        oct[nr] = n % 8;
+	        n = n / 8;
+	        nr++;
+	    }
+	    
+	    System.out.print("\n(matoda)Valoare octala: ");
+	    for (int i = nr - 1; i >= 0; i--)
+	        System.out.print(oct[i]);
+	}
+	
+	public static void main(String[] args) 
+	{
+		// TODO Auto-generated method stub
+		
+		dis = new Scanner(System.in);
+		
+		int val = 23;
+		System.out.println("Valoare intreaga: "+ val);
+		
+		//binary
+		System.out.println("Valoare binara: "+ Integer.toBinaryString(val));
+		
+		//octal
+		System.out.println("Valoare octala: "+ Integer.toOctalString(val));
+		
+		//hexazecimal
+		System.out.println("Valoare hexazecimala: "+Integer.toHexString(val));
+		
+		//method binary
+		binary(val);
+		
+		//method octal
+		octal(val);
+	}
+
+}
+
+
+-------------------------------------------------------------------------------
+
+/* Popa Larisa-Ancuta  Lab 3  Prob 5
+ -implementati algoritmii cunoscuti de ordonare a sirurilor numerice 
+      (bubble sort, insertion sort, quick sort, etc.)
+ -aplicati-i asupra unui sir de valori intregi citite de la tastatura
+ */
+
+import java.util.Scanner;
+
+public class Prob_05 
+{
+	public static Scanner dis;
+	
+	public void afisare(int...v)
+	{
+		System.out.print("Dimensiune= "+ v.length + "\nContinut: ");
+		for(int x:v) 
+			System.out.print(x+" ");
+		System.out.println("\n");
+	}
+	
+	public void bubbleSort(int n, int sir[])
+	{
+		int[] aux = sir.clone();
+		
+		for (int i = 0; i < n-1; i++)
+		{
+		    for (int j = 1; j < n-i; j++) 
+		    {
+		        if (aux[j-1] < aux[j])
+		        {
+		        	int temp =aux[j-1];
+		        	aux[j-1]=aux[j];
+		        	aux[j]=temp;
+		        }
+		    }
+		}
+		
+		System.out.print("Bubble Sort \nDimensiune= "+ aux.length + "\nContinut: ");
+		for(int x:aux) 
+			System.out.print(x+" ");
+		System.out.println("\n");
+	}
+	
+	public void insertionSort(int n, int sir[])
+	{
+		int[] aux = sir.clone();
+		int ok;
+		
+		    for (int i = 1; i < n; i++)
+		    {
+		        ok = aux[i];
+		        int j = i - 1;
+		        while (j >= 0 && aux[j] > ok)
+		        {
+		            aux[j + 1] = aux[j];
+		            j = j - 1;
+		        }
+		        aux[j + 1] = ok;
+		    }
+		
+		System.out.print("Insertion Sort \nDimensiune= "+ aux.length + "\nContinut: ");
+		for(int x:aux) 
+			System.out.print(x+" ");
+		System.out.println("\n");
+	}
+
+	public static void main(String[] args) 
+	{
+		dis= new Scanner(System.in);
+		
+		System.out.println("Introduceti dimensiunea sirului: ");
+		int n = dis.nextInt();
+		
+		int sir[]=new int[n];
+		System.out.println("Introduceti elementele sirului: ");
+		for(int i=0;i<n;i++)
+		{
+			System.out.println("sir["+i+"]= ");
+			sir[i]=dis.nextInt();
+		}
+		
+		Prob_05 o=new Prob_05();
+		o.afisare(sir);
+		o.bubbleSort(n, sir);
+		o.insertionSort(n, sir);
+	}
+
+}
+
+
+-------------------------------------------------------------------------------
+
+/* Popa Larisa-Ancuta  Lab 3  Prob 6
+ -scrieti un program Java care genereaza 2 valori aleatoare
+ -efectueaza asupra lor cateva operatii matematice
+ */
+
+import java.util.Random;
+import java.util.Scanner;
+
+public class Prob_06 
+{
+	public static Scanner dis;
+	public static void main(String[] args) 
+	{
+		// TODO Auto-generated method stub
+		
+		dis= new Scanner(System.in);
+		
+		Random rand=new Random();
+		
+		int nr1=rand.nextInt(1000);
+		int nr2=rand.nextInt(1000);
+		
+		System.out.println("Primul numar generat: "+nr1);
+		System.out.println("Al doilea numar generat: "+nr2);
+		
+		System.out.println("Suma: "+(nr1+nr2));
+		System.out.println("Diferenta: "+(nr1-nr2));
+		System.out.println("Produsul: "+(nr1*nr2));
+		System.out.println("Catul: "+(nr1/nr2)+ "  Restul: "+(nr1%nr2));
+	}
+
+}
+
+-------------------------------------------------------------------------------

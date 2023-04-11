@@ -1,0 +1,402 @@
+/* Lab 10  Popa Larisa-Ancuta  Prob 1
+ * Aplicatie de tip Frame
+ * Se afiseaza intr-un Panel numele si grupa din care faceti parte
+ * Text de culoare albastra centrat orizontal/vertical, tinand cont de dimensiunea panelului
+ */
+
+import java.awt.Color;
+import java.awt.Graphics;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class Prob_01 extends JPanel
+{
+	public Prob_01(){}
+	
+	 public void paint(Graphics g)
+	 {
+		 int w=getWidth(), h=getHeight();
+		 
+		 g.setColor(new Color(7,60,234));
+		 g.drawString("Popa Larisa",w/2,h/2);
+		 g.drawString("grupa 7",w/2,(h/2)+10);
+	 }
+	 
+	 public static void main(String args[])
+	 {
+		 JFrame frame = new JFrame("NUME si GRUPA");
+		 frame.add(new Prob_01());
+		 frame.setSize(450,400);
+		 frame.setVisible(true);
+		 
+	 }
+}
+
+-------------------------------------------------------------------------------
+
+/*  Lab 10  Popa Larisa-Ancuta  Prob 2
+ * Aplicatie de tip Framed
+ * Sa se deseneze intr-un Canvas un cerc de culoare rosie
+ * Cercul sa fie tangent la dimensiunea cea mai mica(inaltime/latime) a componentei Canvas
+ */
+
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowEvent;
+import java.awt.Dimension;
+
+class MyFrame extends Frame implements WindowListener
+{
+	MyCanvas canvas;
+	
+	MyFrame(String title)
+	{
+		super(title);
+		
+		setLayout(new FlowLayout());
+		canvas = new MyCanvas();
+		add(canvas);
+		
+		this.addWindowListener(this);
+		
+		setSize(550, 500);
+		setVisible(true);
+	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		System.exit(1);
+		
+	}
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}	
+}
+
+class MyCanvas extends Canvas
+{
+	Graphics g;
+	
+	MyCanvas()
+	{
+		this.setSize(new Dimension(450, 400));
+		this.setBackground(new Color(230, 233, 246));
+	}
+	
+	public void paint(Graphics g)
+	{
+		int w=getWidth(),h=getHeight();
+		g.setColor(new Color(209,37,25));
+		
+		if(w>h)
+			w=h;
+		if(h>w)
+			h=w;
+		g.drawOval(0, 0, w, h);
+	}
+	
+}
+
+class Test
+{
+	public static void main(String...strings)
+	{
+		MyFrame frame = new MyFrame("CERC ROSU");
+	}
+}
+
+
+-------------------------------------------------------------------------------
+
+/*  Lab 10  Popa Larisa-Ancuta  Prob 3
+ * Aplicatie de tip Frame
+ * Se afiseaza o imagine stocata local sub care este afisat numele fisierului din care provine
+ * Numele fisierului: font statbilit, culoare creata printr-o combinatie de trei valori intregi(RGB)
+ */
+
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowEvent;
+import java.awt.Dimension;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+class MyFrame extends Frame implements WindowListener
+{
+	MyCanvas canvas;
+	
+	MyFrame(String title)
+	{
+		super(title);
+		
+		setLayout(new FlowLayout());
+		canvas = new MyCanvas();
+		add(canvas);
+		
+		this.addWindowListener(this);
+		
+		setSize(600, 600);
+		setVisible(true);
+	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		System.exit(1);
+		
+	}
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}	
+}
+
+class MyCanvas extends Canvas{
+	
+	Graphics g;
+	String path = "C:\\Users\\Larisa\\Downloads\\code.png";
+	BufferedImage img=null;
+	
+	MyCanvas()
+	{
+		this.setSize(new Dimension(500, 500));
+		this.setBackground(new Color(230, 233, 246));
+		
+		try 
+		{
+			img = ImageIO.read(new File(path));	
+		} 
+		catch (IOException e)
+		{
+			e.printStackTrace();
+			System.out.println("Imaginea nu poate fi citita!!");
+			System.exit(1);
+		}
+		
+		textImg();
+	}
+
+	public void textImg() 
+	{
+		Graphics g = img.getGraphics();
+		
+		g.setColor(new Color(252, 215, 151));
+		g.setFont(new Font("Courier", Font.PLAIN, 20));
+		
+		g.drawString(path,20,490);
+	}
+
+	@Override
+	public void paint(Graphics g) 
+	{
+		g.drawImage(img, 1, 1, this);
+	}
+}
+
+class Test
+{
+	public static void main(String...strings)
+	{
+		MyFrame frame = new MyFrame("IMAGINE LOCALA");
+	}
+}
+
+-------------------------------------------------------------------------------
+
+/*  Lab 10  Popa Larisa-Ancuta  Prob 4
+ * Aplicatie de tip Frame
+ * Se afiseaza o mira de televiziune
+ * Mira:-contine 10 nivele de gri, culorile de baza rosu/verde/albastru/galben/cyan/magenta
+        -acopera intreaga dimensiune a componentei in care se face desenarea
+ */
+
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.event.WindowListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.awt.event.WindowEvent;
+import java.awt.Dimension;
+
+class MyFrame extends Frame implements WindowListener
+{
+	MyCanvas canvas;
+	
+	MyFrame(String title)
+	{
+		super(title);
+		
+		setLayout(new FlowLayout());
+		canvas = new MyCanvas();
+		add(canvas);
+		
+		this.addWindowListener(this);
+		
+		setSize(600, 340);
+		setVisible(true);
+	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		System.exit(1);
+		
+	}
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}	
+}
+
+class MyCanvas extends Canvas
+{
+	Graphics g;
+
+	protected static final int NR_ROW = 6;
+    protected static final int NR_COL = 12;
+    protected static final int BOX_SIZE = 50;
+    
+	private List<Color> colors;
+	
+	MyCanvas()
+	{
+		colors = new ArrayList<>(20);
+		
+		int grey=20;
+		for(int i=0;i<12;i++)
+		{
+			colors.add(new Color(grey,grey,grey));
+			grey+=10;
+		}
+		
+		colors.add(Color.red);
+		colors.add(Color.green);
+		colors.add(Color.blue);
+		colors.add(Color.yellow);
+		colors.add(Color.cyan);
+		colors.add(Color.magenta);
+	}
+	
+	@Override
+    public Dimension getSize()
+	{
+        return new Dimension(NR_COL * BOX_SIZE, NR_ROW*BOX_SIZE);
+    }
+
+	public void paint(Graphics g)
+	{
+		for(int c=0;c<NR_COL;c++)
+		{
+			g.setColor(colors.get(c));
+			g.fillRect(c*BOX_SIZE, 0,BOX_SIZE,2*BOX_SIZE);
+		}
+		
+		for (int r=0;r<NR_ROW;r++)
+		{
+            for (int c=2;c<NR_COL;c++) 
+            {
+                g.setColor(colors.get(r+12)); 
+                g.fillRect(r*2*BOX_SIZE,c*BOX_SIZE,2*BOX_SIZE,BOX_SIZE);
+            }
+        }
+	}
+}
+
+class Test
+{
+	public static void main(String...strings)
+	{
+		MyFrame frame = new MyFrame("MiraTV");
+	}
+}

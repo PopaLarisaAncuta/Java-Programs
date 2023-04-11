@@ -1,0 +1,429 @@
+/* Lab 4  Popa Larisa-Ancuta  Prob 1
+ -scrieți o clasă Methods in care să aveți 3 metode: 
+    -o metodă cu număr variabil de parametri de tip intreg, care returnează media aritmetică a parametrilor; 
+    -o altă metodă în care să definiți un tablou unidimensional de n numere de tip double 
+       (n fiind parametrul metodei și care va fi citit în main() de la tastatură), elementele acestuia vor primi valori generate aleator și 
+       metoda va returna acest tablou; 
+    -o metodă statică ce primește ca parametru un tablou de caractere, convertește caracterele respective în majuscule și 
+       formează din acest șir un obiect String, pe care îl returnează.
+    -din metoda main(), definită intr-o altă clasă, apelați metodele clasei Methods și 
+    afișați rezultatele pe ecran (valorile de apel pentru prima metodă și șirul de caractere cu care se apelează a 3-a metodă se vor defini în main()).
+ */
+
+import java.util.Random;
+import java.util.Scanner;
+
+//clasa metode
+class Methods
+{
+	//calculeaza media aritmetica a unui sir cu numar variabil de parametri
+	double Med(int... sir)
+	{
+		int n= sir.length;
+		double s=0, med=0;
+		
+		for(int nr:sir)
+			s+=nr;
+		
+		med=(double)(s/n);
+		
+		return med;
+	}
+	
+	//returneaza un tablou de numere generate aleator
+	double[] NewTab(int n)
+	{
+		double[] sir =new double[n];
+		
+		Random rd=new Random(1000);
+		
+		for(int i=0;i<n;i++)
+			sir[i]=rd.nextDouble();
+		
+		return sir;
+	}
+	
+	//returneaza un string cu caractere transformate in majuscule
+	String BigStr(char[] tab)
+	{
+		for(int i=0;i<tab.length;i++)
+			tab[i]=(char)(tab[i]-32);
+		
+		String str = new String(tab);
+		
+		return str;
+	}
+}
+
+public class Prob_01
+{
+	public static Scanner dis;
+	public static void main(String[] args)
+	{
+		dis=new Scanner(System.in);
+		Methods o = new Methods();
+		int n;
+		
+		//metoda Med
+		int sir[]= {5,7,4,3};
+		System.out.print("Media aritmetica a elementelor: ");
+		for(int i=0;i<sir.length;i++)
+			System.out.print(sir[i]+",");
+		System.out.print(" este: "+o.Med(sir));
+		
+		//metoda NewTab
+		System.out.println("\nIntroduceti dimensiunea sirului: ");
+		n=dis.nextInt();
+		double[] nSir= o.NewTab(n);
+		System.out.println("Elementele sirului sunt :");
+		for(int i=0;i<n;i++)
+			System.out.print(nSir[i]+" ");
+		
+		// metoda BigStr 
+		char[] tab = {'l','a','r','i','s','a'};
+		String tab2= new String(tab);
+		System.out.println("\nSirul introdus: "+tab2 +" ->caractere mari: " + o.BigStr(tab));
+	}
+}
+
+-------------------------------------------------------------------------------
+
+/* Lab 4  Popa Larisa-Ancuta  Prob 2
+ -Definiți o clasă X care va avea ca atribute un șir de caractere privat, un obiect de tip String cu specificatorul protected și 
+    un întreg fără specificator de acces
+ -Clasa va conține un constructor explicit cu parametri, care va inițializa atributele, 
+    metode accesor și mutator pentru câmpurile care nu pot fi accesate din afara clasei și 
+    va redefini metoda finalize() moștenită din clasa Object, care va afișa un mesaj corespunzător.
+ -În metoda main(), plasată în altă clasă, creați un obiect din clasa X, 
+    afișați valorile atributelor, apoi pregătiți obiectul pentru a fi eliminat de garbage collector
+    Creați apoi un nou obiect X, modificați valorile atributelor și afișați pe ecran valorile acestora.
+ */
+
+class NoName
+{
+	private char[] sir;
+	protected String obj;
+	int nr;
+	
+	//constructor explicit cu parametri
+	NoName(int nr, String obj)
+	{
+		this.nr=nr;
+		this.obj=obj;
+		this.sir=new char[obj.length()];
+		this.sir=obj.toCharArray();
+	}
+	
+	//metode accesor 
+	public char[] GetSir()
+	{
+		return sir;
+	}
+	
+	public String GetStr()
+	{
+		return obj;
+	}
+	
+	//metode mutator
+	public void SetSir(char sir[])
+	{
+		this.sir=sir;
+	}
+	
+	public void SetStr(String obj)
+	{
+		this.obj=obj;
+	}
+	
+	//metoda finalize
+	public void finalize()
+	{
+		System.out.println("\nHappy end!");
+	}
+	
+}
+
+//main
+public class Prob_02
+{
+	public static void main(String[] args) 
+	{
+		NoName o1 = new NoName(25,"munte");
+		
+		System.out.println("Primul obiect: \nValoarea intreaga: "+o1.nr
+				+"\nSirul de caractere: "+ String.valueOf(o1.GetSir()) //modifica sirul de caractere intr-un string
+				+"\nString: "+o1.GetStr());
+		
+		//pregatire obiect pentru a fi eliminat de garbage collector
+		o1=null;
+		System.gc();
+		
+		NoName o2=new NoName(16,"vara");
+
+		System.out.println("\nObiectul initial: \nValoarea intreaga: "+o2.nr
+				+"\nSirul de caractere: "+ String.valueOf(o2.GetSir()) //modifica sirul de caractere intr-un string
+				+"\nString: "+o2.GetStr());
+		
+		o2.nr=21;
+		o2.SetSir("mare".toCharArray());
+		o2.SetStr("munte");
+		
+		System.out.println("\nObiectul modificat: \nValoarea intreaga: "+o2.nr
+				+"\nSirul de caractere: "+ String.valueOf(o2.GetSir()) //modifica sirul de caractere intr-un string
+				+"\nString: "+o2.GetStr());
+	}
+
+}
+
+-------------------------------------------------------------------------------
+
+/* Lab 4  Popa Larisa-Ancuta  Prob 3
+ -scrieți o clasă Java care modelează o matrice de valori întregi
+ -atât dimensiunile matricii cât și tabloul bidimensional de elemente sunt atribute private în clasă, 
+    accesate prin intermediul unor metode publice setter și getter.
+ -includeți în clasă metode de afișare a matricii, de calcul și retur a numărului de grupuri de elemente (9 valori învecinate), 
+    care nu diferă cu mai mult de 5% față de un anumit prag.
+ */
+
+class Matrice
+{
+	private int n,m,mat[][];
+	
+	//constructor
+	Matrice()
+	{
+		n=0;
+		m=0;
+		mat=new int[20][20];
+	}
+	//setter
+	public void SetN(int n)
+	{
+		this.n=n;
+	}
+	public void SetM(int m)
+	{
+		this.m=m;
+	}
+	public void SetMatrix(int mat[][])
+	{
+		this.mat=mat;
+	}
+	
+	//getter
+	public int GetN()
+	{
+		return n;
+	}
+	public int GetM()
+	{
+		return m;
+	}
+	public int[][] GetMatrix()
+	{
+		return mat;
+	}
+	
+	//afisare
+	public void AfisMat(int n,int m,int mat[][])
+	{
+		System.out.println("Matricea introdusa este:");
+		for(int i=0;i<n;i++)
+		{
+			for(int j=0;j<m;j++)
+				System.out.print(mat[i][j]+" ");
+			System.out.println();
+		}
+	}
+	
+	public int NrGrupuri(int prag,int n,int m,int mat[][])
+	{
+		int nr=0;
+		double v_prag=(double)5/100*prag; //5% din valoarea pragului
+		double p_min=prag-v_prag,p_max=prag+v_prag; //pragul maxim si pragul minim 
+	
+		for(int i=0;i<n;i++)
+		{
+			int n1=0,m1=3;
+			while(i+3<=n && m1<=m)
+			{
+				boolean ok=true;
+				for(int j=i;j<i+3;j++)
+				{
+					for(int k=n1;k<m1;k++)
+						if(mat[j][k]<p_min || mat[j][k]>p_max)
+							ok=false;
+				}
+				
+				if(ok)
+					nr++;
+				n1++;
+				m1++;
+			}
+		}
+		
+		return nr;
+	}
+}
+
+public class Prob_03 
+{
+
+	public static void main(String[] args) 
+	{
+		Matrice obj=new Matrice();
+		
+		obj.SetN(4);
+		obj.SetM(4);
+		
+		int tab[][]= {{95,102,99,101},{101,103,105,104},{100,98,99,97},{98,96,95,92}};
+		obj.SetMatrix(tab);
+		
+		int n=obj.GetN(),m=obj.GetM(), mat[][]=obj.GetMatrix();
+		
+		obj.AfisMat(n, m, mat);
+		
+		System.out.println("Numarul de grupuri este: "+ obj.NrGrupuri(100, n, m, mat));
+	}
+
+}
+
+
+-------------------------------------------------------------------------------
+
+/* Lab 4  Popa Larisa-Ancuta  Prob 4
+ * Scrieți o clasă Java numită Persoană cu atributele private: nume (String), latitudine și longitudine (float)
+ * clasa conține un constructor explicit fără parametri care inițializează numele cu null și latitudinea și longitudinea cu 0
+ * Metoda finalize() va fi implementată pentru a afișa un mesaj la distrugerea obiectelor
+ * atributele clasei se pot modifica prin metodele mutator specifice setNume(), setLatitudine() și setLongitudine()
+ * atributele vor fi returnate prin metode accesor specifice
+ * Instanțiați n obiecte, citiți și setati valorile atributelor, apoi afișați datele tuturor obiectelor.
+ */
+
+import java.util.Scanner;
+
+class Persoana
+{
+	private String nume;
+	private float latitudine, longitudine;
+	
+	//constructor fara parametri
+	Persoana()
+	{
+		nume = null;
+		latitudine=0;
+		longitudine=0;
+	}
+	
+	//metode mutator
+	public void setNume(String nume)
+	{
+		this.nume=nume;
+	}
+	public void setLatitudine(float nr)
+	{
+		this.latitudine=nr;
+	}
+	public void setLongitudine(float nr)
+	{
+		this.longitudine=nr;
+	}
+	
+	//metode accesor
+	public String getNume()
+	{
+		return nume;
+	}
+	public float getLatitudine()
+	{
+		return latitudine;
+	}
+	public float getLongitudine()
+	{
+		return longitudine;
+	}
+	
+	//metoda finalize
+	public void finalize()
+	{
+		System.out.println("\nHappy end!");
+	}
+}
+public class Prob_04
+{
+	public static Scanner dis;
+	public static void main(String[] args)
+	{
+		dis = new Scanner(System.in);
+		
+		int n;
+		
+		System.out.print("Introduceti numarul de obiecte: ");
+		n=dis.nextInt();
+		
+		Persoana pers[] = new Persoana[n];
+		
+		for(int i=0;i<n;i++)
+		{
+			Persoana nPers=new Persoana();
+			
+			System.out.print("Persoana: "+i);
+			System.out.print("\n   Introduceti numele: ");
+			nPers.setNume(dis.next());
+			System.out.print("   Introduceti latitudinea: ");
+			nPers.setLatitudine(dis.nextFloat());
+			System.out.print("   Introduceti longitudinea: ");
+			nPers.setLongitudine(dis.nextFloat());
+			
+			pers[i]=nPers;
+		}
+		
+		for(int i=0;i<n;i++)
+		{
+			System.out.print("\nPersoana: " + i);
+			System.out.print("\n  Nume: "+ pers[i].getNume()
+					+"\n  Latitudine: " + pers[i].getLatitudine()
+					+"\n  Longitudine: " + pers[i].getLongitudine());
+		}
+
+	}
+
+}
+
+
+-------------------------------------------------------------------------------
+
+/* Lab 4  Popa Larisa-Ancuta  Prob 6
+ * Definiți un șir unidimensional de valori de tip char, având numărul mai mic sau cel mult egal cu un n citit de la tastatură
+ * Fiecare valoare conține valori alfa-numerice generate aleator
+ * Transformați șirul de caractere într-un obiect de tip String
+ * Afișați valoarea inițială și apoi valoarea obținută prin înlocuirea fiecărui caracter numeric cu ‘*’
+ */
+import java.util.Scanner;
+import java.util.Random;
+
+public class Prob_06 
+{
+	private static Scanner dis = new Scanner(System.in);
+	public static void main(String[] args)
+	{
+		int n;
+	    Random rd = new Random();
+	    
+		System.out.println("Introduceti un nr: ");
+		n = dis.nextInt();
+		
+		char[] c=new char[n];
+			
+		 for(int i= 0;i<n;i++)
+			 c[i] = (char)(rd.nextInt('Z')+48);
+		 
+		 String sir = new String(c);
+		 System.out.println("\nValoarea initiala este: " + sir);
+		 
+		String newSir=sir.replaceAll("[0-9]", "*");
+		 
+		 System.out.println("\nDupa modificare: " + newSir);
+	}
+}

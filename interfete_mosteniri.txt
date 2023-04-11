@@ -1,0 +1,657 @@
+/* Lab 5  Popa Larisa-Ancuta  Prob 1.1
+ * Să se implementeze o interfață Java care conține prototipurile metodelor de adunare, scădere, înmulțire, împărțire, radical și ridicare la putere
+ * Toate metodele vor avea doi parametri de tip double și vor specifica tipul returnat double.
+ * Implementați interfața astfel încât operațiile să fie definite în cadrul unei clase. 
+ * Instanțiați clasa și verificați operațiile implementate.
+ */
+
+import java.util.Scanner;
+import java.lang.Math;
+
+interface Interfata
+{
+	double adunare(double a, double b);
+	double scadere(double a, double b);
+	double inmultire(double a, double b);
+	double impartire(double a, double b);
+	double radical(double a);
+	double putere(double a,double b);
+}
+
+class Operatii implements Interfata
+{
+	@Override
+	public double adunare(double a, double b)
+	{
+		return a+b;
+	}
+
+	@Override
+	public double scadere(double a, double b) 
+	{
+		return a-b;
+	}
+
+	@Override
+	public double inmultire(double a, double b)
+	{
+		return a*b;
+	}
+
+	@Override
+	public double impartire(double a, double b)
+	{
+		return a/b;
+	}
+
+	@Override
+	public double radical(double a) 
+	{
+		return Math.sqrt(a);
+	}
+
+	@Override
+	public double putere(double a, double b) 
+	{
+		return Math.pow(a,b);
+	}
+}
+
+//main
+class Methods
+{
+	public static Scanner dis;
+	public static void main(String args[])
+	{
+		double a,b;
+		
+		dis= new Scanner(System.in);
+		
+		System.out.println("a= ");
+		a=dis.nextDouble();
+		System.out.println("b= ");
+		b=dis.nextDouble();
+		
+		Operatii ob = new Operatii();
+		
+		System.out.println("a+b= "+ ob.adunare(a, b));
+		System.out.println("a-b= "+ ob.scadere(a, b));
+		System.out.println("a*b= "+ ob.inmultire(a, b));
+		System.out.println("a/b= "+ ob.impartire(a, b));
+		System.out.println("radical din a= "+ ob.radical(a));
+		System.out.println("a^b= "+ ob.putere(a, b));
+		
+	}
+}
+
+
+-------------------------------------------------------------------------------
+
+/* Lab 5  Popa Larisa-Ancuta  Prob 1.2
+ *În loc de o interfață care conține toate metodele menționate anterior, să se implementeze 4 interfețe funcționale, câte una pentru fiecare metodă.
+ *Interfețele vor fi implementate în cadrul unei singure clase. 
+ *Instanțiați clasa și verificați operațiile implementate
+ */
+
+import java.util.Scanner;
+
+interface Interfata1
+{
+	double adunare(double a, double b);
+}
+
+interface Interfata2
+{
+	double scadere(double a, double b);
+}
+
+interface Interfata3
+{
+	double inmultire(double a, double b);
+}
+
+interface Interfata4
+{
+	double impartire(double a, double b);
+}
+
+class Math implements Interfata1,Interfata2,Interfata3,Interfata4
+{
+	@Override
+	public double adunare(double a, double b)
+	{
+		return a+b;
+	}
+
+	@Override
+	public double scadere(double a, double b) 
+	{
+		return a-b;
+	}
+
+	@Override
+	public double inmultire(double a, double b)
+	{
+		return a*b;
+	}
+
+	@Override
+	public double impartire(double a, double b)
+	{
+		return a%b;
+	}
+	
+}
+
+//main
+class Methods
+{
+	public static Scanner dis;
+	public static void main(String args[])
+	{
+		double a,b;
+		
+		dis= new Scanner(System.in);
+		
+		System.out.println("a= ");
+		a=dis.nextDouble();
+		System.out.println("b= ");
+		b=dis.nextDouble();
+		
+		Math ob = new Math();
+		
+		System.out.println("Adunare: "+ ob.adunare(a, b));
+		System.out.println("Scadere: "+ ob.scadere(a, b));
+		System.out.println("Inmultire: "+ ob.inmultire(a, b));
+		System.out.println("Impartire: "+ ob.impartire(a, b));
+		
+	}
+}
+
+-------------------------------------------------------------------------------
+
+/* Lab 5  Popa Larisa-Ancuta  Prob 2
+ * Definiți o interfață denumită FormaGeometrica care are 2 metode care primesc ca parametru o valoare integer și returnează o valoare double reprezentînd aria,
+      respectiv perimetrul unei forme geometrice echilaterale
+ *Implementați interfața în 3 clase distincte pentru forme concrete de tip pătrat, triunghi echilateral și hexagon regulat.
+ *Se preiau datele pentru un număr N de forme geometrice de fiecare tip.
+ *Să se calculeze aria și perimetrul total al formelor geometrice, ținând cont că acestea nu se suprapun.
+ */
+
+import java.lang.Math;
+import java.util.Scanner;
+
+interface FormaGeometrica
+{
+	double aria(int val);
+	double perimetru(int val);
+}
+
+class Patrat implements FormaGeometrica
+{
+	public int lat;
+	
+	public void SetLat(int val)
+	{
+		this.lat=val;
+	}
+	
+	public int GetLat()
+	{
+		return lat;
+	}
+	
+	public double aria(int val)
+	{
+		return  Math.pow(val, 2);
+	}
+	
+	public double perimetru(int val)
+	{
+		return lat*4;
+	}
+}
+
+class Triunghi implements FormaGeometrica
+{
+	public int lat;
+	
+	public void SetLat(int val)
+	{
+		this.lat=val;
+	}
+	
+	public int GetLat()
+	{
+		return lat;
+	}
+	
+	public double aria(int val) 
+	{
+		return (Math.pow(val, 2)*Math.sqrt(3))/4;
+	}
+
+	public double perimetru(int val) 
+	{
+		return val*3;
+	}
+	
+}
+
+class Hexagon implements FormaGeometrica
+{
+	public int lat;
+	
+	public void SetLat(int val)
+	{
+		this.lat=val;
+	}
+	
+	public int GetLat()
+	{
+		return lat;
+	}
+	
+	public double aria(int val) 
+	{
+		return (3*Math.pow(val, 2)*Math.sqrt(3))/2;
+	}
+
+	public double perimetru(int val) 
+	{
+		return val*6;
+	}
+}
+
+class Prob_2
+{
+	public static Scanner dis;
+	public static void main(String[] args)
+	{
+		dis=new Scanner(System.in);
+		
+		double totalA=0,totalP=0;
+		
+		System.out.println("Introduceti numarul de patrate: ");
+		int N = dis.nextInt();
+		
+		Patrat p[] = new Patrat[N];
+		Patrat auxp=new Patrat();
+		
+		for(int i=0;i<N;i++)
+		{
+			System.out.println("Introduceti dimensiunea laturii pentru patratul "+i+": ");
+			auxp.SetLat(dis.nextInt());
+			p[i]=auxp;
+			
+			totalA+=p[i].aria(p[i].GetLat());
+			totalP+=p[i].perimetru(p[i].GetLat());
+		}
+		
+		System.out.println("Introduceti numarul de triunghiuri: ");
+		N = dis.nextInt();
+		
+		Triunghi t[] = new Triunghi[N];
+		Triunghi auxt=new Triunghi();
+		
+		for(int i=0;i<N;i++)
+		{
+			System.out.println("Introduceti dimensiunea laturii pentru triunghiul "+i+": ");
+			auxt.SetLat(dis.nextInt());
+			t[i]=auxt;
+			
+			totalA+=t[i].aria(t[i].GetLat());
+			totalP+=t[i].perimetru(t[i].GetLat());
+		}
+		
+		
+		System.out.println("Introduceti numarul de hexagoane: ");
+		N = dis.nextInt();
+		
+		Hexagon h[] = new Hexagon[N];
+		Hexagon auxh=new Hexagon();
+		
+		for(int i=0;i<N;i++)
+		{
+			System.out.println("Introduceti dimensiunea laturii pentru hexagonul "+i+": ");
+			auxh.SetLat(dis.nextInt());
+			h[i]=auxh;
+			
+			totalA+=h[i].aria(h[i].GetLat());
+			totalP+=h[i].perimetru(h[i].GetLat());
+		}
+		
+		System.out.println("Aria totala: "+totalA);
+		System.out.println("Perimetru total: "+totalP);
+	}
+}
+
+-------------------------------------------------------------------------------
+
+/* Lab 5  Popa Larisa-Ancuta  Prob 4
+ * Considerați clasa Fractie care are 2 atribute integer și protected a si b pentru numărător și numitor
+ * câte o metodă accesor și mutator pentru fiecare din atributele clasei. 
+ * Definiți un constructor explicit fără parametri care inițializează a cu 0 si b cu 1, și un constructor explicit cu 2 parametri
+ * Implementați o metodă numită simplifica() care simplifică fracția curentă și modifică valorile numărătorului și numitorului stocate în clasă
+ * Simplificarea se bazează pe metoda int cmmdc(int,int) care determină și returnează cel mai mare divizor comun al valorilor primite ca parametri 
+      folosind algoritmul de împărțiri succesive
+ *Suprascrieți metoda toString() pentru a returna ca String reprezentarea fracției (“a/b”)
+ *Definiți clasa FractieExtinsa, derivată din Fractie, care va avea un constructor cu parametri (care apelează constructorul din clasa de bază)
+ *Clasa va suprascrie metoda int cmmdc(int,int) și va calcula rezultatul pe baza unui algoritm de scăderi succesive
+ *Clasa conține o metodă care returnează true/false dacă fracția este supraunitară sau nu
+ */
+
+import java.util.Scanner;
+
+public class Fractie 
+{
+	protected int a,b;
+	
+	//constructor fara parametri 
+	public Fractie()
+	{
+		a=0;
+		b=1;
+	}
+	
+	//constructor cu parametri
+	public Fractie(int a, int b)
+	{
+		this.a=a;
+		this.b=b;
+	}
+	
+	//setteri
+	public void SetA(int a)
+	{
+		this.a=a;
+	}
+	public void SetB(int b)
+	{
+		this.b=b;
+	}
+	
+	//getteri
+	public int GetA()
+	{
+		return a;
+	}
+	public int GetB()
+	{
+		return b;
+	}
+	
+	//cel mai mare divizor comun(Algoritmul lui Euclid) 
+	public int cmmdc(int a,int b)
+	{
+		int d=a%b;
+		
+		while(d!=0)
+		{
+			a=b;
+			b=d;
+			d=a%b;
+		}
+		
+		return b;
+	}
+	
+	//simplificare fractie
+	public Fractie simplifica(Fractie F)
+	{
+		int d = cmmdc(F.GetA(),F.GetB());
+		
+		F.SetA(F.GetA()/d);
+		F.SetB(F.GetB()/d);
+		
+		return F;
+	}
+	
+	public String toString(Fractie F)
+	{
+		return String.valueOf(F.GetA())+"/"+String.valueOf(F.GetB());
+	}
+}
+
+class FractieExtinsa extends Fractie
+{
+	public FractieExtinsa(int a,int b)
+	{
+		super(a,b);
+	}
+	
+	public int cmmdc(int a ,int b)
+	{
+		while(a!=b)
+		{
+			if(a>b)
+				a-=b;
+			else
+				b-=a;
+		}
+		
+		return a;
+	}
+	
+	public FractieExtinsa simplifica(FractieExtinsa F)
+	{
+		int d = cmmdc(F.GetA(),F.GetB());
+		
+		F.SetA(F.GetA()/d);
+		F.SetB(F.GetB()/d);
+		
+		return F;
+	}
+	
+	public boolean supraunitara(int a,int b)
+	{
+		if(a<b)
+			return false;
+		
+		return true;
+	}
+}
+
+class Lab_4 
+{
+	public static Scanner dis;
+	public static void main(String[] args) 
+	{
+		dis=new Scanner(System.in);
+		
+		System.out.println("Introduceti numarul de obiecte Fractie: ");
+		int N=dis.nextInt();
+		
+		Fractie[] f=new Fractie[N];
+		
+		for(int i=0;i<N;i++)
+		{
+			Fractie aux=new Fractie();
+			
+			System.out.println("Introduceti datele fractiei "+i+"\n   Numarator=");
+			aux.SetA(dis.nextInt());
+			System.out.println("   Numitor=");
+			aux.SetB(dis.nextInt());
+			
+			f[i]=aux;
+		}
+		
+		for(int i=0;i<N;i++)
+			System.out.println("Fractia "+i+": "+f[i].toString(f[i]));
+		
+		for(int i=0;i<N;i++)
+		{
+			f[i].simplifica(f[i]);
+			System.out.println("Fractia "+i+" simplificata: "+f[i].toString(f[i]));
+		}
+		
+		System.out.println("Introduceti datele fractiei extinse:\n   Numarator=");
+		int nr=dis.nextInt();
+		System.out.println("   Numitor=");
+		int num=dis.nextInt();
+		FractieExtinsa f_ex= new FractieExtinsa(nr,num);
+		
+		System.out.println("Fractia extinsa: "+f_ex.toString(f_ex));
+		f_ex.simplifica(f_ex);
+		System.out.println("Fractia extinsa simplificata: "+f_ex.toString(f_ex));
+		
+		if(f_ex.supraunitara(f_ex.GetA(), f_ex.GetB()))
+				System.out.println("Fractia extinsa este supraunitara!");
+		else
+			System.out.println("Fractia extinsa NU este supraunitara!");
+	}
+
+}
+
+
+-------------------------------------------------------------------------------
+
+/* Lab 5  Popa Larisa-Ancuta  Prob 5
+ * Definiți un sir de elemente de tip String. 
+ * Folosind expresii lambda, ordonați-l după următoarele metode: lungime (mic->mare), inversul lungimii (mare->mic), ordine alfabetică,
+      șirurile de caractere ce încep cu litera M vor fi primele, urmate de restul șirurilor
+ */
+
+import java.util.Scanner;
+
+interface OrdCresc
+{
+	void ordC(String[] sir);
+}
+
+interface OrdDescresc
+{
+	void ordD(String[] sir);
+}
+
+interface OrdAlfabetic
+{
+	void ordA(String[] sir);
+}
+
+interface OrdM
+{
+	void ordM(String[] sir);
+}
+
+public class Prob_05 
+{
+	public static Scanner dis;
+	
+	public void ordC(String[] sir, OrdCresc oC)
+	{
+		oC.ordC(sir);
+	}
+	
+	public void ordD(String[] sir, OrdDescresc o)
+	{
+		o.ordD(sir);
+	}
+	
+	public void ordA(String[] sir,OrdAlfabetic o)
+	{
+		o.ordA(sir);
+	}
+	
+	public void ordM(String[] sir, OrdM o)
+	{
+		o.ordM(sir);
+	}
+	
+	public void afisare(int n, String[] sir)
+	{
+		for(int i=0;i<n;i++)
+			System.out.print(sir[i]+" ");
+	}
+	
+	//main
+	public static void main(String[] args)
+	{
+		dis=new Scanner(System.in);
+		
+		System.out.println("Introduceti numarul de string-uri: ");
+		int n=dis.nextInt();
+		
+		System.out.println("Introduceti sirul de string-uri: ");
+		String[] sir=new String[n];
+		for(int i=0;i<n;i++)
+			sir[i]=new String(dis.next());
+		
+		Prob_05 ob = new Prob_05();
+		
+		System.out.println("Sirul introdus este: ");
+		ob.afisare(n, sir);
+		
+		OrdCresc oC = (o) ->
+		{
+			for(int i=0;i<o.length-1;i++)
+			{
+				for(int j=i+1;j<o.length;j++)
+					if(o[i].length()>o[j].length())
+					{
+						String aux= new String(o[i]);
+						o[i]=o[j];
+						o[j]=aux;
+					}
+			}
+		};
+		
+		System.out.println("\n\nOrdonare crescatoare: ");
+		ob.ordC(sir, oC);
+		ob.afisare(n, sir);
+		
+		OrdDescresc oD = (o) ->
+		{
+			for(int i=0;i<o.length-1;i++)
+			{
+				for(int j=i+1;j<o.length;j++)
+					if(o[i].length()<o[j].length())
+					{
+						String aux= new String(o[i]);
+						o[i]=o[j];
+						o[j]=aux;
+					}
+			}
+		};
+		
+		System.out.println("\n\nOrdonare descrescatoare: ");
+		ob.ordD(sir, oD);
+		ob.afisare(n, sir);
+		
+		OrdAlfabetic oA = (o) ->
+		{
+			for(int i=0;i<o.length-1;i++)
+			{
+				for(int j=i+1;j<o.length;j++)
+					if(o[i].compareTo(o[j])>0)
+					{
+						String aux= new String(o[i]);
+						o[i]=o[j];
+						o[j]=aux;
+					}
+			}
+		};
+		
+		System.out.println("\n\nOrdonare alfabetica: ");
+		ob.ordA(sir, oA);
+		ob.afisare(n, sir);
+		
+		OrdM oM = (o) ->
+		{
+			for(int i=0;i<o.length-1;i++)
+			{
+				for(int j=i+1;j<o.length;j++)
+					if(o[i].startsWith("M")==false && o[j].startsWith("M")==true)
+					{
+						String aux= new String(o[i]);
+						o[i]=o[j];
+						o[j]=aux;
+					}
+			}
+		};
+		
+		System.out.println("\n\nOrdonare in functie de M: ");
+		ob.ordM(sir, oM);
+		ob.afisare(n, sir);
+	}
+}

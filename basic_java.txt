@@ -1,0 +1,178 @@
+/*2127  Popa Larisa-Ancuta  Prob.2
+-cititi de la tastatura o valoare intreaga
+-afiseaza factorialul numarului citit*/
+
+import java.io.*;
+import java.lang.String;
+import java.io.IOException;
+
+public class Prob_2 
+{
+
+	public static void main(String[] args) 
+	{
+		// TODO Auto-generated method stub
+
+        BufferedReader dis= new BufferedReader(new InputStreamReader(System.in));
+		
+		String Number=null;
+		
+		System.out.print("Enter a number: ");
+		System.out.flush();
+		
+		try 
+		{
+			Number = dis.readLine();
+		} 
+		catch (IOException ioe)
+		{
+			System.out.println(ioe.toString());
+			System.exit(1);
+		}
+		
+		long nr = Long.parseLong(Number);
+		
+		System.out.println("Number is: " + nr);
+		
+		int fact=1;
+		for(int i=2;i<=nr;i++)
+			fact*=i;
+		
+		System.out.println("The factorial of number is: " + fact);
+	}
+
+}
+-------------------------------------------------------------------------------
+
+/* 2127  Popa Larisa-Ancuta  Prob 3
+ -se citesc de la tastatura 2 valori intregi
+ -se afiseaza cmmdc-ul valorilor*/
+
+import java.lang.String;
+import java.util.Scanner;
+
+public class Prob_3 
+{
+	private static Scanner dis;
+	public static void main(String[] args) 
+	{
+		// TODO Auto-generated method stub
+		
+		dis = new Scanner(System.in);
+		
+		int a, b;
+		
+		System.out.print("Enter first number: ");
+		System.out.flush();
+		
+		a = dis.nextInt();
+		
+		System.out.print("Enter second number: ");
+		System.out.flush();
+		
+		b = dis.nextInt();
+		
+		System.out.println("Numbers are: " + a + " and "+ b);
+		
+		while(a!=b)
+			if(a>b)
+				a-=b;
+			else
+				b-=a;
+		
+		System.out.println("CMMDC is: " + a);
+		
+	}
+
+}
+
+----------------------------------------------------------------------------------
+
+/* 2127  Popa Larisa-Ancuta  Prob 4
+-cititi de la tastatura un numar intreg
+-afisati toti divizorii numarului citit*/
+
+import java.lang.String;
+import java.util.Scanner;
+
+public class Prob_4 
+{
+	private static Scanner dis;
+	public static void main(String[] args) 
+	{
+		// TODO Auto-generated method stub
+		
+		dis = new Scanner(System.in);
+		
+		int nr;
+		
+		System.out.print("Enter a number: ");
+		System.out.flush();
+		
+		nr = dis.nextInt();
+		
+		System.out.print("The number is: " + nr);
+		
+		System.out.print("\nThe divisors are:");
+		for(int i=1;i<=nr;i++)
+			if(nr%i==0)
+				System.out.print(" "+ i);
+	}
+
+}
+
+-----------------------------------------------------------------------------------
+
+/* 2127  Popa Larisa-Ancuta  Prob 5
+-cititi de la tastatuta mai multe numere intregi
+-verificati daca sunt numere prime
+-numarul de valori citite este preluat de la tastatura sau din linia de comanda*/
+
+import java.lang.String;
+import java.util.Scanner;
+
+public class Prob_5
+{
+	private static Scanner dis;
+	public static void main(String[] args) 
+	{
+		// TODO Auto-generated method stub
+		
+		dis = new Scanner(System.in);
+		
+		int nr;
+		
+		System.out.print("Enter a number: ");
+		System.out.flush();
+		
+		nr = dis.nextInt();
+		
+		System.out.print("Enter " + nr +" numbers!");
+		
+		for(int i=1;i<=nr;i++)
+		{
+			System.out.print("\nEnter a number: ");
+			System.out.flush();
+			
+			int val = dis.nextInt();
+			int ok=1;
+			
+			if(val<2)
+				System.out.print("Number " + val + " is prime.");
+			else
+			{
+			for(int d=2;d*d<=val;d++)
+				if(val%d==0)
+					ok=0;
+			
+			if(ok==1)
+				System.out.print("Number " + val + " is prime.");
+			else
+				System.out.print("Number " + val + " isn't prime.");
+			}
+		}
+
+	}
+
+}
+

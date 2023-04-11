@@ -1,0 +1,365 @@
+/*  Lab 9  Popa Larisa-Ancuta  Prob 1
+ * In cadrul aplicatiei de implementeaza interfata Runnable
+ * Constructorul clasei permite definirea unui nume asociat fiecarui obiect instantiat din clasa respectiva
+ * Clasa are un atribut static ce contorizeaza numarul de obiecte instantiate
+ * Metoda run() a clasei va afisa numele obiectului de un nr. de ori egal cu valoarea contorului si o intarziere de 1000ms
+ *
+ *Dintr-o clasa separata, se creeaza mai multe fire de executie cu obiecte diferite din clasa descrisa anterior
+ */
+
+import java.util.Scanner;
+
+//implementarea interfetei Runnable
+class MyRunnable implements Runnable
+{
+	String nume;
+	static int nr=0; //contor
+	
+	//constructorul clasei
+	public MyRunnable(String nume)
+	{
+		this.nume=nume;
+		nr++;
+	}
+	
+	public void run()
+	{
+		System.out.println("START"); 
+		for(int i=0;i<nr;i++)
+		{
+			try
+			{
+				System.out.println(this.nume);
+				
+				Thread.sleep(1000); //intarziere 1000 ms
+			}
+			catch(InterruptedException e) 
+			{
+				System.out.println("Sesiune intrerupta!");
+			}
+		}
+	}
+}
+
+public class Prob_01
+{
+	public static Scanner dis;
+	public static void main(String[] args)
+	{
+		String nume="";
+		
+		dis=new Scanner(System.in);
+		
+		System.out.println("Introduceti un nume: ");
+		nume=dis.next();
+		Thread t1=new Thread(new MyRunnable(nume));
+		t1.start();
+		
+		System.out.println("Introduceti un nume: ");
+		nume=dis.next();
+		Thread t2=new Thread(new MyRunnable(nume));
+		t2.start();
+		
+		System.out.println("Introduceti un nume: ");
+		nume=dis.next();
+		Thread t3=new Thread(new MyRunnable(nume));
+		t3.start();
+	}
+}
+
+
+-------------------------------------------------------------------------------
+
+/*  Lab 9  Popa Larisa-Ancuta  Prob 2
+ * Un fir de executie genereaza 30 de numere aleatoare intre 0 si 30
+ * Alt fir de executie afieaza aria cercului cu raza generata de primul fir de executie(daca raza este div. cu 3)
+ */
+
+import java.util.Random;
+
+class RandomNumbers implements Runnable
+{
+	int[] nr = new int[30];
+	
+	@Override
+	public void run() 
+	{
+		Random r=new Random();
+		for(int i=0;i<30;i++)
+			nr[i]=r.nextInt(30);
+		
+		System.out.println("Numerele generate sunt: ");
+		for(int i=0;i<30;i++)
+			System.out.print(" "+nr[i]);
+	}
+}
+
+class Cerc implements Runnable
+{
+	RandomNumbers nrGenerate;
+	
+	Cerc(RandomNumbers nr)
+	{
+		this.nrGenerate=nr;
+	}
+	
+	public void arieCerc(int[] tab)
+	{
+		for(int i=0;i<tab.length;i++)
+		{
+			if(tab[i]%3==0)
+			{
+				double a=Math.PI*Math.pow(tab[i], 2);
+				System.out.println("Aria cercului cu R="+tab[i]+"este: "+a);
+			}
+		}
+	}
+	
+	@Override
+	public void run() 
+	{
+		arieCerc(nrGenerate.nr);
+	}
+	
+}
+
+public class Prob_02 
+{
+	public static void main(String[] args) 
+	{
+		
+		RandomNumbers nr=new RandomNumbers();
+		
+		Thread numar = new Thread(nr);
+		numar.start();
+		
+		Thread cerc = new Thread(new Cerc(nr));
+		cerc.start();
+	}
+
+}
+
+
+-------------------------------------------------------------------------------
+
+/*  Lab 9  Popa Larisa-Ancuta  Prob 3
+ * sa se scrie o clasa pt. determinarea unui element din sirul Fibonacci
+ * in clasa vor fi doua metode:
+      -calculeaza valoarea elementului
+      -afiseaza acea valoare
+ * se foloseste mecanismul multithreading cu sincronizare, a.i. in timp ce un fir de executie realizeaza calculul 
+      celalalt afiseaza valorile intermediare(elem sirului pana la elem calculat)
+ */
+
+import java.util.Scanner;
+
+class Fibonacci implements Runnable 
+{
+	int caut;
+	
+	public static int valFin;
+	public static boolean ok = false,unu=true;
+
+	public Fibonacci(int nr)
+	{
+		this.caut=nr;
+	}
+
+	@Override
+	public void run()
+	{
+		calcFibo();
+	}
+
+	public synchronized void calcFibo() 
+	{
+		if(caut == 0)
+		{
+			afisare(0);
+		}
+		else if (caut == 1)
+		{
+			afisare(1);
+		}
+		else if (caut == 2)
+		{
+			afisare(1);
+		} 
+		else 
+		{
+			int val1 = 0, val2 = 1;
+			for (int i = 2; i <= caut; i++) 
+			{
+				ok = false;
+				
+				valFin = val1 + val2;
+				val1 = val2;
+				val2 = valFin;
+
+				while (!ok) 
+				{
+					try 
+					{
+						if(unu)
+						{
+							System.out.println(1);
+							unu=false;
+						}
+						Thread.sleep(1000);
+					} 
+					catch (Exception e) 
+					{
+						System.out.println("Sesiune intrerupta!");
+					}
+				}
+
+			}
+			afisare(valFin);
+		}
+
+	}
+
+	public void afisare(int nr) 
+	{
+		System.out.println("Numarul cautat este: " + nr);
+	}
+
+}
+
+
+class AfisareFibo extends Thread 
+{
+	@Override
+	public void run() 
+	{
+		while (true) 
+		{
+			while (Fibonacci.ok) 
+			{
+				try 
+				{
+					Thread.sleep(1000);
+				} 
+				catch (Exception e) 
+				{
+					System.out.println("Sesiune intrerupta!");
+				}
+			}
+			System.out.println(Fibonacci.valFin);
+			Fibonacci.ok = true;
+		}
+	}
+}
+
+public class Prob_03 
+{
+	public static Scanner dis;
+	public static void main(String[] args) 
+	{
+		dis = new Scanner(System.in);
+		
+		System.out.print("Introduceti indexul numarului cautat:");
+		int nr = dis.nextInt();
+
+		try 
+		{
+			Thread t1 = new Thread(new Fibonacci(nr));
+			Thread t2 = new AfisareFibo();
+
+			t1.start();
+			t2.start();	
+		}
+		catch (Exception e) 
+		{
+			System.out.println("Eroare!");
+		}
+	}
+}
+
+-------------------------------------------------------------------------------
+
+/*  Lab 9  Popa Larisa-Ancuta  Prob 4
+ * Aplicatia foloseste accesul sincronizat la metode pentru exculudecre mutuala
+ * Se creeaza 3 fire de executie ce apeleaza simultan metode de incrementare/decrementare a unei variabile dintr-o alta clasa
+ */
+
+class Variabila
+{
+	Integer val;
+
+	public Variabila(Integer val) 
+	{
+		this.val = val;
+	}
+}
+
+class Plus extends Thread
+{
+	Variabila var;
+
+	public Plus(Variabila var) 
+	{
+		this.var = var;
+	}
+
+	@Override
+	public void run() 
+	{
+		synchronized (var.val) 
+		{
+			try 
+			{
+				var.val +=2;
+			} 
+			catch (Exception e) 
+			{
+				System.out.println("Eroare!");
+			}
+		}
+	}
+}
+
+class Minus extends Thread 
+{
+	Variabila var;
+
+	public Minus(Variabila var) 
+	{
+		this.var = var;
+	}
+
+	@Override
+	public void run() 
+	{
+		synchronized (var.val) 
+		{
+			try 
+			{
+				var.val -=1;
+			} 
+			catch (Exception e) 
+			{
+				System.out.println("Eroare!");
+			}
+		}
+	}
+}
+
+public class Prob_04
+{
+	public static void main(String[] args) 
+	{
+		Variabila nr = new Variabila(122);
+
+		Plus t1 = new Plus(nr);
+		Minus t2= new Minus(nr);
+		Plus t3 = new Plus(nr);
+
+		t1.start();
+		t2.start();
+		t3.start(); 
+
+		System.out.println("Valoarea finala este: " + nr.val);
+	}
+
+}

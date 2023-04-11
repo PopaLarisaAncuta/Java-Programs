@@ -1,0 +1,339 @@
+/*  Lab 11  Popa Larisa-Ancuta  Prob 1
+ * Aplicatia foloseste GridLayout pentru aranjarea in pagina a componentelor unei aplicatii de calcul
+ * Intrare/Iesire: text field
+ * Butoane: numere/operatii matematice/stergerea ecranului
+ */
+
+import java.awt.Button;
+import java.awt.Component;
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JTextArea;
+
+public class Calculator extends JFrame
+{
+	Calculator()
+	{
+		this.setSize(400, 400);
+		
+		GridLayout grid = new GridLayout(5,4,3,3);
+		this.setLayout(grid);
+		
+		JTextArea t=new JTextArea("Afisaj");
+		t.enable(false);
+		this.add(t);
+		
+		this.add(new JButton(""));
+		this.add(new JButton(""));
+		this.add(new JButton("DEL"));
+		
+		this.add(new JButton("+"));
+		this.add(new JButton("-"));
+		this.add(new JButton("*"));
+		this.add(new JButton("/"));
+		
+		JButton[] buttons = new JButton[10];
+		
+		for(int i=1;i<buttons.length;i++)
+		{
+			buttons[i]=new JButton(Integer.toString(i));
+			this.add(buttons[i]);
+		}
+		
+		this.add(new JButton("0"));
+		this.add(new JButton(""));
+		this.add(new JButton("="));
+		
+		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		this.setVisible(true);
+	}
+	
+	public static void main(String args[])
+	{
+		new Calculator();
+	}
+}
+
+
+-------------------------------------------------------------------------------
+
+/* Lab 11  Popa Larisa-Ancuta  Prob 2
+ * Aplicatia foloseste GridBagLayout pentru aranjarea in pagina a componentelor unei aplicatii de calcul
+ */
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.*;
+
+public class Calculator extends JFrame 
+{
+	public Calculator() 
+	{
+		this.setSize(400,400);
+		this.setTitle("Calculator");
+		
+		GridBagLayout layout = new GridBagLayout();
+		this.setLayout(layout);
+		
+		GridBagConstraints grid=new GridBagConstraints();
+		
+		grid.insets = new Insets(2,2,2,2);
+		grid.fill=GridBagConstraints.BOTH;
+		
+		grid.gridx=0; //coloana 0
+		grid.gridy=0; //randul 0
+		
+		grid.ipadx=40; //creste latimea componentei cu 40 de pixeli
+		grid.ipady=40; //creste inaltimea componentei cu 40 de pixeli
+
+		grid.gridwidth = 5;
+		
+		JTextField afisaj= new JTextField("Afisaj");
+		this.add(afisaj,grid);
+		
+		JButton nr1 = new JButton("1");
+		JButton nr2 = new JButton("2");
+		JButton nr3 = new JButton("3");
+		JButton nr4 = new JButton("4");
+		JButton nr5 = new JButton("5");
+		JButton nr6 = new JButton("6");
+		JButton nr7 = new JButton("7");
+		JButton nr8 = new JButton("8");
+		JButton nr9 = new JButton("9");
+		JButton nr0 = new JButton("0");
+		
+		JButton plus = new JButton("+");
+		JButton minus = new JButton("-");
+		JButton ori = new JButton("*");
+		JButton impartit = new JButton("/");
+		
+		JButton egal = new JButton("=");
+		JButton delete = new JButton("DEL");
+
+		grid.gridwidth = 1;
+		grid.gridx = 0;
+		grid.gridy = 2;
+		this.add(nr1, grid);
+
+		grid.gridx = 1;
+		this.add(nr2, grid);
+		
+		grid.gridx = 2;
+		this.add(nr3, grid);
+		
+		grid.gridx = 3;
+		this.add(plus, grid);
+		
+		grid.gridx = 0;
+		grid.gridy = 3;
+		this.add(nr4, grid);
+		
+		grid.gridx = 1;
+		this.add(nr5, grid);
+		
+		grid.gridx = 2;
+		this.add(nr6, grid);
+		
+		grid.gridx = 3;
+		this.add(minus, grid);
+		
+		grid.gridx = 0;
+		grid.gridy = 4;
+		this.add(nr7, grid);
+		
+		grid.gridx = 1;
+		this.add(nr8, grid);
+		
+		grid.gridx = 2;
+		this.add(nr9, grid);
+		
+		grid.gridx = 3;
+		this.add(ori, grid);
+		
+		grid.gridx = 0;
+		grid.gridy = 5;
+		this.add(nr0, grid);
+		
+		grid.gridx = 1;
+		this.add(delete, grid);
+		
+		grid.gridx = 2;
+		this.add(egal, grid);
+		
+		grid.gridx = 3;
+		this.add(impartit, grid);
+		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);
+	}
+
+	public static void main(String[] args) 
+	{
+		new Calculator();
+	}
+}
+
+
+-------------------------------------------------------------------------------
+
+/* Lab 11  Popa Larisa-Ancuta  Prob 4
+ * Aplicatia preia din doua campuri text numele si grupa
+ * Afiseaza aceasta informatie intr-o eticheta de culoare RGB(122,123,129)
+ */
+
+import java.awt.*;
+import javax.swing.*;
+
+public class NumeRGB extends JFrame
+{
+	public NumeRGB() 
+	{
+		this.setSize(new Dimension(400, 250));
+		this.setTitle("Nume si Grupa");
+		
+		JLabel txtNume= new JLabel("Nume:");
+		txtNume.setBounds(40,10,100,30);
+		this.add(txtNume);
+		
+		JTextField nume = new JTextField("Popa Larisa-Ancuta");
+		nume.setBounds(100, 10, 150, 30);
+		this.add(nume);
+		
+		JLabel txtGr= new JLabel("Grupa:");
+		txtGr.setBounds(40,60,100,30);
+		this.add(txtGr);
+		
+		JTextField grupa = new JTextField("2127");
+		grupa.setBounds(100, 60, 150, 30);
+		this.add(grupa);
+		
+		JLabel label = new JLabel("",SwingConstants.CENTER);
+		label.setForeground(new Color(122, 123, 129));
+		label.setText(nume.getText() + " este din grupa: " + grupa.getText());
+		this.add(label);
+		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);
+	}
+	
+	public static void main(String[] args) 
+	{
+		new NumeRGB();
+	}
+}
+
+-------------------------------------------------------------------------------
+
+/*  Lab 11  Popa Larisa-Ancuta  Prob 5
+ * Utilizatorul poate scire in componente de tip TextField cantitatile RGB ale unei culori
+ * Dupa apasarea unui buton, o componenta Label va afisa un text care reprezinta cantitatile specificate,
+ *    cu culoarea rezultata, daca valorile numerice sunt corecte(0-255)
+ * Altfel, eticheta va afisa cu rosu un mesaj de eroare
+ * Se folosesc exceptii pentru verificarea valorilor
+ */
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import javax.swing.*;
+
+class RGBIndexOutOfBounds extends Exception 
+{
+	public RGBIndexOutOfBounds(String e)
+	{
+		super(e);
+	}
+}
+
+public class Culori extends JFrame 
+{
+	public JTextField red,green,blue;
+	public JLabel rez;
+	
+	//interfata
+	public Culori() 
+	{
+		this.setSize(new Dimension(400,200));
+		this.setTitle("RGB Color");
+		this.setLayout(null);
+		
+		JLabel informatie = new JLabel("R:0-255  G:0-255  B:0-255");
+		informatie.setBounds(35, 5, 250, 30);
+		this.add(informatie);
+		
+		JLabel redL = new JLabel("R:");
+		redL.setForeground(Color.RED);
+		redL.setBounds(35, 40, 100, 30);
+		this.add(redL);
+		
+		red = new JTextField("0");
+		red.setBounds(50, 40, 100, 30);
+		this.add(red);
+		
+		JLabel greenL = new JLabel("G:");
+		greenL.setForeground(Color.GREEN);
+		greenL.setBounds(35, 70, 100, 30);
+		this.add(greenL);
+
+	    green = new JTextField("0");
+		green.setBounds(50, 70, 100, 30);
+		this.add(green);
+		
+		JLabel blueL = new JLabel("B:");
+		blueL.setForeground(Color.BLUE);
+		blueL.setBounds(35, 100, 100, 30);
+		this.add(blueL);
+
+		blue = new JTextField("0");
+		blue.setBounds(50, 100, 100, 30);
+		this.add(blue);
+		
+		JButton buton = new JButton("Genereaza");
+		buton.setBounds(200, 40, 100, 30);
+		this.add(buton);
+		
+		rez = new JLabel("-");
+		rez.setBounds(200, 70, 200, 30);
+		this.add(rez);
+		
+		buton.addActionListener(e -> Afisare(e));
+		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);
+	}
+
+	//actiune buton 
+	public void Afisare(ActionEvent e) 
+	{
+		try 
+		{
+			int r=Integer.parseInt(red.getText());
+			int g=Integer.parseInt(green.getText());
+			int b=Integer.parseInt(blue.getText());
+			
+			if ((r < 0) || (r > 255))
+				throw new RGBIndexOutOfBounds("Valoare -R- incorecta!");
+			if((g < 0) || (g > 255))
+					throw new RGBIndexOutOfBounds("Valoare -G- incorecta!");
+			if((b < 0) || (b > 255))
+				throw new RGBIndexOutOfBounds("Valoare -B- incorecta!");
+
+			rez.setText("Culoarea aleasa: "+r+"/"+g+"/"+b);
+			rez.setForeground(new Color(r,g,b));
+		}
+		catch (RGBIndexOutOfBounds ex) 
+		{
+			rez.setText("Valori incorecte!");
+			rez.setForeground(Color.RED);
+		}
+	}
+	
+	//main
+	public static void main(String[] args) 
+	{
+		new Culori();
+	}
+}
